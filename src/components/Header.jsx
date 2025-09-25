@@ -37,7 +37,7 @@ function Header() {
                         加入會員
                     </button>
                     <button className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue">
-                        <FontAwesomeIcon icon={["fa-solid", "fa-right-to-bracket"]} className="w-8 h-8 text-main-blue"/>
+                        <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="w-8 h-8 text-main-blue"/>
                         會員登入
                     </button>
                 </div>
@@ -49,7 +49,7 @@ function Header() {
                 aria-expanded={open}
                 aria-controls="mobile-menu"
                 >
-                    <FontAwesomeIcon icon={open ? ["fa-solid", "fa-xmark"] : ["fa-solid", "fa-bars"]} className="w-5 h-5"/>
+                    <FontAwesomeIcon icon={open ? ["fas", "xmark"] : ["fas", "bars"]} className="w-5 h-5"/>
                 </button>
             </div>
 
@@ -69,7 +69,7 @@ function Header() {
                         加入會員
                         </button>
                         <button className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent">
-                            <FontAwesomeIcon icon={["fa-solid", "fa-right-to-bracket"]} className="h-4 w-4" />
+                            <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="h-4 w-4" />
                         登入
                         </button>
                     </div>

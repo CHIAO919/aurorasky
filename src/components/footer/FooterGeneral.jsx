@@ -58,7 +58,7 @@ function Footer() {
                                 aria-controls={panelId}
                                 >
                                     <span>{sec.title}</span>
-                                    <FontAwesomeIcon icon={["fa-solid", "fa-chevron-down"]} 
+                                    <FontAwesomeIcon icon={["fas", "chevron-down"]} 
                                     className={`transition-transform ${expanded ? "rotate-180" : ""}`}/>
                                 </button>
 
