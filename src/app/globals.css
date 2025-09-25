@@ -8,6 +8,9 @@
 @theme {
   --color-main-blue: #0f4c81;
   --color-light-blue: #b6d8f6;
+  --color-bg-blue: #f0f4f8;
+  --color-text-blue: #34495e;
+  --color-main-gold: #a38d6d;
 }
 
 @media (prefers-color-scheme: dark) {
