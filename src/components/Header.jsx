@@ -27,7 +27,7 @@ function Header() {
                     <Link className="hover:text-main-blue" href="/about">體驗 AURORA</Link>
                     <Link className="hover:text-main-blue" href="/skytier">SkyTier 會員</Link>
                     <Link className="hover:text-main-blue" href="#">航班查詢</Link>
-                    <Link className="hover:text-main-blue" href="#">聯絡我們</Link>
+                    <Link className="hover:text-main-blue" href="/contact">聯絡我們</Link>
                 </nav>
 
                 {/* Desktop actions */}
