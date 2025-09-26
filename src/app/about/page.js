@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import Breadcrumb from "@/components/Breadcrumb";
 import CabinCard from "@/components/CabinCard";
+import SectionTitle from "@/components/SectionTitle";
 
 function About() {
     return (
@@ -18,11 +19,7 @@ function About() {
                     ]}
                 />
 
-                <div className="flex items-center gap-4 my-8">
-                    <span className="h-px bg-main-gold flex-1"/>
-                    <h2 className="text-main-gold text-2xl font-extrabold tracking-wider text-shadow-xs">A321neo</h2>
-                    <span className="h-px bg-main-gold flex-1"/>
-                </div>
+                <SectionTitle>A321neo</SectionTitle>
 
                 <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <CabinCard
