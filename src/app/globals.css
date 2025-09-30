@@ -11,6 +11,7 @@
   --color-bg-blue: #f0f4f8;
   --color-text-blue: #34495e;
   --color-main-gold: #a38d6d;
+  --color-important-red: #ff2525;
 }
 
 @media (prefers-color-scheme: dark) {
