@@ -2,23 +2,30 @@
 import "@/fontawesome";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { usePathname } from "next/navigation";
 
 
 function Header() {
     const [open, setOpen] = useState(false);
+    const pathname = usePathname() ?? "";
+
+    useEffect(() => {
+        setOpen(false);
+    }, [pathname]);
+
     return(
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center">
                     <Image
-                    src="/headerLogo.png"
-                    alt="Aurora Sky Logo"
-                    width={160}
-                    height={36}
-                    priority
+                        src="/headerLogo.png"
+                        alt="Aurora Sky Logo"
+                        width={160}
+                        height={36}
+                        priority
                     />
                 </Link>
 
@@ -43,28 +50,58 @@ function Header() {
                 </div>
 
                 {/* Mobile hamburger */}
-                <button className="md:hidden inline-flex items-center justify-center p-2 rounded-md border cursor-pointer"
-                onClick={() => setOpen((v) => !v)}
-                aria-label="Toggle menu"
-                aria-expanded={open}
-                aria-controls="mobile-menu"
+                <button 
+                    className="md:hidden inline-flex items-center justify-center p-2 rounded-md border cursor-pointer"
+                    onClick={() => setOpen((v) => !v)}
+                    aria-label="Toggle menu"
+                    aria-expanded={open}
+                    aria-controls="mobile-menu"
                 >
                     <FontAwesomeIcon icon={open ? ["fas", "xmark"] : ["fas", "bars"]} className="w-5 h-5"/>
                 </button>
             </div>
 
             {/* Mobile panel */}
-            <div id="mobile-menu" 
-            className={`md:hidden overflow-hidden transition-[max-height] duration-300 ${open ? "max-h-96" : "max-h-0"}`}
+            <div 
+                id="mobile-menu" 
+                className={`md:hidden overflow-hidden transition-[max-height] duration-300 ${open ? "max-h-96" : "max-h-0"}`}
+                aria-hidden={!open}
             >
                 <nav className="px-4 pb-4 pt-2 space-y-2 text-gray-700 font-bold">
-                    <Link className="block px-3 py-2 rounded hover:bg-light-blue" href="#">體驗 AURORA</Link>
-                    <Link className="block px-3 py-2 rounded hover:bg-light-blue" href="#">SkyTier 會員</Link>
-                    <Link className="block px-3 py-2 rounded hover:bg-light-blue" href="#">航班查詢</Link>
-                    <Link className="block px-3 py-2 rounded hover:bg-light-blue" href="#">聯絡我們</Link>
+                    <Link 
+                        className="block px-3 py-2 rounded hover:bg-light-blue" 
+                        href="/about"
+                        onClick={() => setOpen(false)}
+                    >
+                        體驗 AURORA
+                    </Link>
+                    <Link
+                        className="block px-3 py-2 rounded hover:bg-light-blue" 
+                        href="/skytier"
+                        onClick={() => setOpen(false)}
+                    >
+                        SkyTier 會員
+                    </Link>
+                    <Link
+                        className="block px-3 py-2 rounded hover:bg-light-blue" 
+                        href="#"
+                        onClick={() => setOpen(false)}
+                    >
+                        航班查詢
+                    </Link>
+                    <Link
+                        className="block px-3 py-2 rounded hover:bg-light-blue" 
+                        href="/contact"
+                        onClick={() => setOpen(false)}
+                    >
+                        聯絡我們
+                    </Link>
 
                     <div className="mt-2 grid grid-cols-2 gap-2">
-                        <button className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent">
+                        <button 
+                            className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
+                            onClick={() => setOpen(false)}
+                        >
                             <FontAwesomeIcon icon={["fas", "user-plus"]} className="h-4 w-4" />
                         加入會員
                         </button>
