@@ -1,7 +1,7 @@
 import "./globals.css";
 import "@/fontawesome";
 import Header from "@/components/Header";
-import Footer from "@/components/footer/FooterGeneral";
+import Footer from "@/components/footer/FooterBooking";
 
 export const metadata = {
   title: "Aurora Sky",
