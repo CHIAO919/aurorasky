@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function CabinCard({zh, en, highlights = [], desc, img}) {
     return(
-        <article className=" overflow-hidden">
+        <article className=" overflow-hidden leading-6 tracking-wide">
             <div className="relative w-full aspect-[16/9]">
                 <Image
                 src={img}
