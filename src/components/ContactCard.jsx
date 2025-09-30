@@ -6,7 +6,7 @@ export default function ContactCard({ region, phone, serviceHours, address, mapU
 
     return (
         <article className="bg-white rounded-md overflow-hidden flex flex-col md:flex-row items-center">
-            <div className="py-2 px-3.5 md:flex-1 w-full">
+            <div className="py-2 px-3.5 md:flex-1 w-full leading-6 tracking-wide">
                 <h3 className="text-text-blue text-xl font-bold pb-1.5 border-b border-gray-300">{region}</h3>
                 
                 <div className="mt-1.5 flex flex-col gap-2">
