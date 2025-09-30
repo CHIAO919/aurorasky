@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function SkyTierCard({ tierKey = "blue", title, summary, perks = [], badgeSrc }) {
     return (
-        <article className="flex flex-col md:flex-row items-start gap-8 border-b last:border-b-0 border-gray-300 pb-[20px]">
+        <article className="flex flex-col md:flex-row items-start gap-8 border-b last:border-b-0 border-gray-300 pb-[20px] leading-6 tracking-wide">
             <div className="shrink-0 rounded-tl-4xl rounded-br-4xl overflow-hidden mx-auto md:mx-0">
                 <Image
                     src={badgeSrc}
