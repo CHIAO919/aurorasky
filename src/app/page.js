@@ -2,6 +2,7 @@
 import FlightBookingForm from "@/components/index/FlightBookingForm";
 import QuickTabs from "@/components/index/QuickTabs";
 import NewsCard from "@/components/index/NewsSection";
+import HotelCarousel from "@/components/index/HotelCarousel";
 
 export default function Home() {
   const handleSearch = (payload) => {
@@ -22,13 +23,15 @@ export default function Home() {
         <p className="text-2xl md:text-3xl font-extrabold text-text-blue text-shadow-lg text-shadow-gray-500">重新定義商務空中旅程</p>
       </section>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-[60px]">
 
         <FlightBookingForm onSubmit={handleSearch} />
 
         <QuickTabs />
 
         <NewsCard />
+
+        <HotelCarousel />
       </div>
     </div>
   );
