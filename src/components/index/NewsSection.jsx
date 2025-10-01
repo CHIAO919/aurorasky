@@ -18,10 +18,10 @@ const NEWS_CARDS = [
 
 export default function NewsSection() {
     return (
-        <section className="mb-7 max-w-5xl mx-auto leading-6 tracking-widest">
+        <section className="leading-6 tracking-widest">
             <h2 className="text-text-blue text-2xl font-bold text-center">最新消息</h2>
 
-            <div className="px-3 py-6 grid grid-cols-3 gap-5">
+            <div className="px-3 py-6 grid grid-cols-1 sm:grid-cols-3 gap-5">
                 {NEWS_CARDS.map((c) => (
                     <div
                         key={c.id}
