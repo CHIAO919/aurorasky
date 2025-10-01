@@ -72,7 +72,7 @@ export default function FlightBookingForm({ onSubmit }) {
     const canSearch = departure && arrival && departDate && returnDate;
 
     return (
-        <section className="mb-7">
+        <section>
             <div className="bg-white rounded-2xl shadow-lg p-6 md:p-10 max-w-5xl mx-auto leading-6 tracking-wide">
                 <h2 className="text-text-blue text-2xl font-bold border-b border-gray-400 pb-2 mb-6 tracking-widest">
                     預訂航班
@@ -143,8 +143,8 @@ export default function FlightBookingForm({ onSubmit }) {
                             disabled={!canSearch}
                             className={`rounded-full py-2 font-bold transition
                                 ${canSearch
-                                ? 'bg-main-blue text-white px-10 hover:bg-blue-700'
-                                : 'bg-gray-300 text-gray-500 px-10 cursor-not-allowed'}
+                                ? 'bg-main-blue text-white w-[100%] md:w-[25%] hover:bg-blue-700'
+                                : 'bg-gray-300 text-gray-500 w-[100%] md:w-[25%] cursor-not-allowed'}
                             `}
                         >
                             Search
