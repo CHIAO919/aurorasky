@@ -70,7 +70,7 @@ export default function QuickTabs() {
     const current = TABS.find(t => t.key === active) ?? TABS[0];
 
     return (
-        <section className="mb-7 max-w-5xl mx-auto leading-6 tracking-wide">
+        <section className="leading-6 tracking-wide">
             <div className="bg-main-blue px-3 py-6 grid grid-cols-3 content-center justify-items-center mb-1.5">
                 {TABS.map(({key, label, iconOff, iconOn}) => {
                     const isActive = key === active;
@@ -105,7 +105,7 @@ export default function QuickTabs() {
                             className="text-center text-text-blue"
                         >
                             <button
-                                className="border border-text-blue rounded-full w-3xs py-1 text-base mb-2 hover:bg-light-blue font-bold hover:border-transparent"
+                                className="border border-text-blue rounded-full w-[90%] md:w-[20vw] py-1 text-base mb-2 hover:bg-light-blue font-bold hover:border-transparent"
                             >{a.title}</button>
 
                             <p className="text-sm">{a.desc}</p>
