@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 
 const STORAGE_KEY = 'aurora_last_search';
 
@@ -40,6 +41,7 @@ export default function FlightBookingForm({ onSubmit }) {
     const [arrival, setArrival] = useState('');
     const [departDate, setDepartDate] = useState('');
     const [returnDate, setReturnDate] = useState('');
+    const router = useRouter();
 
     useEffect(() => {
         try {
@@ -66,7 +68,8 @@ export default function FlightBookingForm({ onSubmit }) {
         // 寫入 localStorage
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
         // 給父層（或之後接 API / router.push）
-        onSubmit?.(payload);
+        // onSubmit?.(payload);
+        router.push('/booking/results/outbound');
     };
 
     const canSearch = departure && arrival && departDate && returnDate;
