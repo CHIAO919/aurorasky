@@ -3,6 +3,7 @@ import FlightBookingForm from "@/components/index/FlightBookingForm";
 import QuickTabs from "@/components/index/QuickTabs";
 import NewsCard from "@/components/index/NewsSection";
 import HotelCarousel from "@/components/index/HotelCarousel";
+import FlightCard from "@/components/booking/FlightCard";
 
 export default function Home() {
   const handleSearch = (payload) => {
