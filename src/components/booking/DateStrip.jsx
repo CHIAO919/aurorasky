@@ -30,12 +30,12 @@ export default function DateStrip({ selectedDate, onChange }) {
                 <button
                     key={`${date}-${offset}`}
                     onClick={() => onChange?.(date)}
-                    className={`px-4 py-2 rounded-xl border 
+                    className={`px-4 py-2 rounded-xl border shadow-xs 
                     ${isActive ? 'bg-main-blue text-white border-main-blue' : 'bg-white text-text-blue border-gray-300'}
                     hover:bg-light-blue hover:text-text-blue cursor-pointer`}
                     aria-pressed={isActive}
                 >
-                    <div className="text-lg">{label}</div>
+                    <div className="text-lg font-bold">{label}</div>
                     <div className="text-base opacity-80">（{weekdayZh}）</div>
                     <div className="text-xs opacity-80">
                         {offset === 0 ? '所選' : (offset > 0 ? `+${offset}` : `${offset}`)}
