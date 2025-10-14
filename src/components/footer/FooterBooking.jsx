@@ -9,9 +9,9 @@ function FooterBooking() {
     ];
 
     return (
-        <footer className="leading-6 tracking-wide">
+        <footer className="leading-6 tracking-wide border-t border-gray-300 pb-[80px]">
             <div>
-                <div className="max-w-7xl mx-auto px-4 py-3">
+                <div className="max-w-5xl mx-auto px-4 py-3">
                     <div className="text-important-red text-base md:text-lg font-bold tracking-wide">
                         <FontAwesomeIcon
                             icon={["fas", "circle-exclamation"]}
@@ -28,7 +28,7 @@ function FooterBooking() {
 
                 <hr className="border-gray-300"/>
 
-                <div className="max-w-7xl mx-auto px-4 py-3 flex items-baseline gap-1 md:gap-2">
+                <div className="max-w-5xl mx-auto px-4 py-3 flex items-baseline gap-1 md:gap-2">
                     <div>
                         <Image
                             src="/footerBookingLogo.png"
