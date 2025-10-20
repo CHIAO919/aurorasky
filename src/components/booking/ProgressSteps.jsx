@@ -1,12 +1,19 @@
 'use client';
+import { Fragment } from 'react';
 
 export default function ProgressSteps({
     steps = [],
     current = 1,
 }) {
     return (
-        <nav>
-            <ol className="flex items-center justify-center">
+        <nav 
+            className="mx-auto w-full max-w-[420px] md:max-w-3xl px-4 md:px-0 overflow-hidden md:overflow-visible [--stepSize:clamp(22px,5.5vw,32px)] [--fontSize:clamp(11px,2.8vw,14px)]"
+            style={{
+                paddingLeft: 'max(16px, env(safe-area-inset-left))',
+                paddingRight: 'max(16px, env(safe-area-inset-right))',
+            }}
+        >
+            <ol className="flex flex-nowrap items-center">
                 {steps.map((label, idx) => {
                     const stepNum = idx + 1;
                     const isActive = stepNum === current;
@@ -25,19 +32,42 @@ export default function ProgressSteps({
                     : 'text-text-blue';
 
                     return (
-                        <li key={label} className="flex items-center gap-1">
-                            <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full border ${circleCls}`}>
-                                {stepNum}
-                            </span>
+                        <Fragment key={label}>
+                            {/* 每一個步驟 */}
+                            <li className="flex flex-col items-center text-center flex-1 min-w-0 px-1">
+                                <span
+                                    className={`inline-flex items-center justify-center rounded-full border ${circleCls} shrink-0`}
+                                    style={{
+                                        width: 'var(--stepSize)',
+                                        height: 'var(--stepSize)',
+                                        fontSize: 'calc(var(--fontSize) * 0.95)',
+                                        lineHeight: 1,
+                                    }}
+                                >
+                                    {stepNum}
+                                </span>
 
-                            <span className={`text-base tracking-wider ${textCls}`}>
-                                {label}
-                            </span>
+                                <span
+                                    className={`${textCls} leading-snug mt-1`}
+                                    style={{ fontSize: 'var(--fontSize)' }}
+                                    title={label}
+                                >
+                                    {label}
+                                </span>
+                            </li>
 
-                            {stepNum !== steps.length && (
-                                <span className="mx-4 h-px w-10 md:w-16 bg-text-blue/20 block" />
+                            {/* 兩步驟之間的水平連接線（放在 li 外，避免跑到下方） */}
+                            {idx < steps.length - 1 && (
+                                <li
+                                    className="
+                                        hidden md:block 
+                                        flex-none self-center 
+                                        h-px bg-text-blue/20
+                                        w-[clamp(12px,6vw,56px)] mx-2
+                                    "
+                                />
                             )}
-                        </li>
+                        </Fragment>
                     );
                 })}
             </ol>
