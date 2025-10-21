@@ -1,5 +1,6 @@
 'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { addMinutes, formatDurationZh } from '@/utils/time';
 
 export default function FlightCard({ item, onSelect }) {
     const {
@@ -8,29 +9,15 @@ export default function FlightCard({ item, onSelect }) {
     } = item;
 
     const DURATION_MIN = 190;
-
-    function addMinutes(timeStr, minutesToAdd) {
-        const safe = timeStr.replace('：', ':');
-        const [hStr, mStr] = safe.split(':');
-        const h = Number(hStr);
-        const m = Number(mStr);
-
-        if (Number.isNaN(h) || Number.isNaN(m)) return { time: timeStr, dayShift: 0 };
-
-        const total = h * 60 + m + minutesToAdd;
-        const dayShift = Math.floor(total / 1440);
-        const minutesInDay = ((total % 1440) + 1440) % 1440; // 保證正值
-        const hh = String(Math.floor(minutesInDay / 60)).padStart(2, '0');
-        const mm = String(minutesInDay % 60).padStart(2, '0');
-        return { time: `${hh}:${mm}`, dayShift };
-    }
+    const PRICE_BASIC = 35000;
+    const PRICE_PLUS  = 45000;
 
     const {time:arrivalTime, dayShift} = addMinutes(departureTime, DURATION_MIN);
     const dayShiftLabel = dayShift > 0 ? ` +${dayShift}` : '';
 
     return (
-        <article className='flex justify-between px-7 shadow-sm bg-white rounded-2xl'>
-            <div className='flex items-center justify-between flex-1 text-text-blue px-6 py-8 border-r border-gray-400'>
+        <article className='flex flex-col md:flex-row justify-between md:px-7 divide-y divide-gray-400 md:divide-y-0 md:divide-x shadow-sm bg-white rounded-2xl'>
+            <div className='flex items-center justify-between flex-1 text-text-blue px-6 py-8'>
                 <div className='flex flex-col items-center gap-1.5 text-center text-lg font-bold'>
                     <p>{originName}</p>
                     <p>{departureTime}</p>
@@ -39,7 +26,7 @@ export default function FlightCard({ item, onSelect }) {
                 <div className='flex flex-col items-center gap-1.5 text-center text-sm font-light text-text-blue'>
                     <p>{flightNo}</p>
                     <FontAwesomeIcon icon={["fas", "arrow-right"]} />
-                    <p>3小時10分鐘</p>
+                    <p>{formatDurationZh(DURATION_MIN)}</p>
                 </div>
 
                 <div className='flex flex-col items-center gap-1.5 text-center text-lg font-bold text-text-blue'>
@@ -52,19 +39,25 @@ export default function FlightCard({ item, onSelect }) {
             </div>
 
             <button
-                className='w-[30%] border-r border-gray-400 flex justify-center items-center'
-                onClick={() => onSelect?.({ item, fare: 'basic' })}
+                className='md:w-[30%] flex justify-between md:justify-center p-6 items-center'
+                onClick={() => onSelect?.({ item, fare: 'basic', price: PRICE_BASIC })}
             >
-                <p className='text-xl font-bold text-text-blue hover:text-important-red'>35000</p>
-                <p className='text-sm'>（TWD）</p>
+                <p className='md:hidden flex text-text-blue'>經濟艙</p>
+                <div className='flex justify-center items-center'>
+                    <p className='text-xl font-bold text-text-blue hover:text-important-red'>{PRICE_BASIC}</p>
+                    <p className='text-sm'>（TWD）</p>
+                </div>
             </button>
 
             <button 
-                className='w-[30%] flex justify-center items-center'
-                onClick={() => onSelect?.({ item, fare: 'plus' })}
+                className='md:w-[30%] flex justify-between md:justify-center p-6 items-center'
+                onClick={() => onSelect?.({ item, fare: 'plus', price: PRICE_PLUS })}
             >
-                <p className='text-xl font-bold text-text-blue hover:text-important-red'>45000</p>
-                <p className='text-sm'>（TWD）</p>
+                <p className='md:hidden flex text-text-blue'>商務艙</p>
+                <div className='flex justify-center items-center'>
+                    <p className='text-xl font-bold text-text-blue hover:text-important-red'>{PRICE_PLUS}</p>
+                    <p className='text-sm'>（TWD）</p>
+                </div>
             </button>
         </article>
     );
