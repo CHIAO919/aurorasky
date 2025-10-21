@@ -23,7 +23,7 @@ export default function DateStrip({ selectedDate, onChange }) {
     });
 
     return (
-        <div className="grid grid-cols-7 gap-5 overflow-x-auto py-2">
+        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-1 py-2 justify-center md:grid md:grid-cols-7 md:gap-5 md:overflow-visible md:px-0">
             {days.map(({ date, offset, label, weekdayZh }) => {
                 const isActive = date === base;
                 return (
