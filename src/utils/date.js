@@ -1,3 +1,6 @@
+const WEEKDAY_ZH_FULL = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+const WEEKDAY_ZH_SHORT = ['週日','週一','週二','週三','週四','週五','週六'];
+
 // 內部：把 Date 物件轉成 YYYY-MM-DD
 function toISODate(d) {
     const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -45,4 +48,24 @@ export function formatMMDD(iso) {
     const mm = String(dt.getMonth() + 1).padStart(2, '0');
     const dd = String(dt.getDate()).padStart(2, '0');
     return `${mm}/${dd}`;
+}
+
+export function formatZhMonthDayWeek(iso, options = {}) {
+    const { padZero = false, withYear = false, shortWeek = false } = options;
+    const dt = parseToDate(iso);
+    if (!dt) return '';
+
+    const y = dt.getFullYear();
+    const m = padZero ? String(dt.getMonth() + 1).padStart(2, '0') : (dt.getMonth() + 1);
+    const d = padZero ? String(dt.getDate()).padStart(2, '0') : dt.getDate();
+    const week = shortWeek ? WEEKDAY_ZH_SHORT[dt.getDay()] : WEEKDAY_ZH_FULL[dt.getDay()];
+
+    const md = `${m}月${d}日`;
+    return withYear ? `${y}年${md}${week}` : `${md}${week}`;
+}
+
+export function getWeekdayNameZh(iso, { short = false } = {}) {
+    const dt = parseToDate(iso);
+    if (!dt) return '';
+    return short ? WEEKDAY_ZH_SHORT[dt.getDay()] : WEEKDAY_ZH_FULL[dt.getDay()];
 }
