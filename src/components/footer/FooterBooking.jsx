@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function FooterBooking() {
+function FooterBooking({ padBottom = false }) {
     const SECTIONS = [
         { label: "關於Aurora Sky", icon: ["far", "file"] },
         { label: "顧客服務", icon: ["far", "file"] },
@@ -9,7 +9,7 @@ function FooterBooking() {
     ];
 
     return (
-        <footer className="leading-6 tracking-wide border-t border-gray-300 pb-[80px]">
+        <footer className={`leading-6 tracking-wide border-t border-gray-300 ${padBottom ? 'pb-[80px]' : ''}`}>
             <div>
                 <div className="max-w-5xl mx-auto px-4 py-3">
                     <div className="text-important-red text-base md:text-lg font-bold tracking-wide">
