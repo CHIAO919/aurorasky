@@ -7,6 +7,7 @@ import FlightList from '@/components/booking/FlightList';
 import ProgressSteps from '@/components/booking/ProgressSteps';
 
 const STORAGE_KEY = 'aurora_last_search';
+const SELECT_KEY  = 'aurora_selected_flights';
 const STEPS = ['航班', '詳情', '個人資料', '付款', '完成'];
 
 export default function FlightResultsPage() {
@@ -21,17 +22,28 @@ export default function FlightResultsPage() {
     const nameOf = (code) => NAMES[code] ?? code?.toUpperCase() ?? '';
 
     const router = useRouter();
-    const { leg } = useParams();                 // 'outbound' | 'return'
+    const { leg } = useParams(); // 'outbound' | 'return'
     const isReturn = leg === 'return';
 
-    const [search, setSearch] = useState(null);  // { departure, arrival, departDate, returnDate }
+    const [search, setSearch] = useState(null); // { departure, arrival, departDate, returnDate }
     const [selectedDate, setSelectedDate] = useState('');
+    const [picked, setPicked] = useState({ outbound: null, return: null });
 
     // 讀 localStorage
     useEffect(() => {
         try {
             const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
             if (saved) setSearch(saved);
+        } catch {}
+
+        try {
+            const sel = JSON.parse(localStorage.getItem(SELECT_KEY) || 'null');
+            if (sel && (typeof sel === 'object')) {
+                setPicked({
+                outbound: sel.outbound ?? null,
+                return: sel.return ?? null,
+                });
+            }
         } catch {}
     }, []);
 
@@ -66,15 +78,46 @@ export default function FlightResultsPage() {
         : { origin: search.departure, destination: search.arrival };  // 去程
     }, [search, isReturn]);
 
-    // 點選某航班後的動作：去程 -> 跳到回程；回程 -> 進下一步
-    const handleSelect = (flight) => {
-        // 這裡可把選到的班機存到另一個 key（略）
+    // 金額加總
+    const totalPrice = useMemo(() => {
+        const o = picked.outbound?.price ?? 0;
+        const r = picked.return?.price ?? 0;
+        return o + r;
+    }, [picked]);
+
+    // 小工具：存回 localStorage
+    function persistPicked(next) {
+        localStorage.setItem(SELECT_KEY, JSON.stringify(next));
+    }
+
+    // 點選某航班後（從 FlightCard 傳上來）
+    const handleSelect = ({ item, fare, price }) => {
+        const next = {
+        outbound: isReturn ? picked.outbound : { item, fare, price },
+        return:   isReturn ? { item, fare, price } : picked.return,
+        };
+        setPicked(next);
+        persistPicked(next);
+    };
+
+    // 按下固定列「下一步/下一頁」
+    const handleNext = () => {
         if (!isReturn) {
+            if (!picked.outbound) {
+                alert('請先選擇去程票價');
+                return;
+            }
             router.push('/booking/results/return');
         } else {
-            router.push('/booking/summary'); // 依你的流程調整
+            if (!picked.return) {
+                alert('請先選擇回程票價');
+                return;
+            }
+            router.push('/booking/summary'); // 依你的流程調整下一頁
         }
     };
+
+    const fmt = (n) => new Intl.NumberFormat('zh-TW').format(n);
 
     if (!search || !filter || !selectedDate) return null;
 
@@ -104,19 +147,23 @@ export default function FlightResultsPage() {
                 }}
             >
                 <div 
-                    className='max-w-5xl mx-auto flex items-center justify-between'
+                    className='max-w-5xl mx-auto flex items-center justify-between px-4 sm:px-6 md:px-8 gap-4'
                     style={{ height: `${BAR_H}px` }}
                 >
                     <div className='text-text-blue'>
                         <div className='flex items-baseline-last gap-2 font-bold'>
-                            <p className='text-xl'>21000</p>
+                            <p className='text-xl'>{fmt(totalPrice)}</p>
                             <p className='text-sm'>元（TWD）</p>
                         </div>
                         <p className='text-sm'>*含稅金及燃油附加費</p>
                     </div>
 
-                    <button className='text-xl border rounded-full px-8 py-2 cursor-pointer hover:bg-main-blue hover:text-white'>
-                        下一步
+                    <button
+                        className='text-xl border rounded-full px-8 py-2 cursor-pointer hover:bg-main-blue hover:text-white'
+                        onClick={handleNext}
+                        disabled={(!isReturn && !picked.outbound) || (isReturn && !picked.return)}
+                    >
+                        {isReturn ? '下一頁' : '下一步'}
                     </button>
                 </div>
             </div>
