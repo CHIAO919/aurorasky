@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 
 const STORAGE_KEY = 'aurora_last_search';
+const SELECT_KEY  = 'aurora_selected_flights';
 
 function today() {
     const d = new Date();
@@ -67,6 +68,8 @@ export default function FlightBookingForm({ onSubmit }) {
         const payload = { departure, arrival, departDate, returnDate };
         // 寫入 localStorage
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        // 清掉上一輪已選票價（重置加總）
+        localStorage.removeItem(SELECT_KEY);
         // 給父層（或之後接 API / router.push）
         // onSubmit?.(payload);
         router.push('/booking/results/outbound');
