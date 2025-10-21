@@ -24,17 +24,25 @@ export default function FlightList({ filter = {}, selectedDate, onSelect }) {
     ), [items, filter, weekday]);
 
     return (
-        <div className="grid gap-4">
-            {visible.map((item) => (
-                <FlightCard
-                key={`${item.flightNo}-${item.weekday}-${item.departureTime}`}
-                item={item}
-                onSelect={onSelect}
-                />
-            ))}
-            {visible.length === 0 && (
-                <p className="text-center text-gray-500 py-6">此日期沒有符合的班次</p>
-            )}
+        <div>
+            <div className="hidden md:flex justify-end items-center text-center rounded-xl py-1.5 bg-text-blue text-white mb-[30px]">
+                <p className="flex-1">行程</p>
+                <p className="w-[32%]">經濟艙</p>
+                <p className="w-[32%]">商務艙</p>
+            </div>
+
+            <div className="grid gap-4">
+                {visible.map((item) => (
+                    <FlightCard
+                    key={`${item.flightNo}-${item.weekday}-${item.departureTime}`}
+                    item={item}
+                    onSelect={onSelect}
+                    />
+                ))}
+                {visible.length === 0 && (
+                    <p className="text-center text-gray-500 py-6">此日期沒有符合的班次</p>
+                )}
+            </div>
         </div>
     );
 }
