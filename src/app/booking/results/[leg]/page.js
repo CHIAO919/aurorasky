@@ -122,7 +122,7 @@ export default function FlightResultsPage() {
     if (!search || !filter || !selectedDate) return null;
 
     return (
-        <div className='relative'>
+        <div className='relative bg-bg-blue'>
             <div className="max-w-5xl mx-auto p-6 space-y-8">
                 <ProgressSteps steps={STEPS} current={1}/>
 
@@ -136,6 +136,7 @@ export default function FlightResultsPage() {
                     filter={filter}
                     selectedDate={selectedDate}
                     onSelect={handleSelect}
+                    selected={isReturn ? picked.return : picked.outbound}
                 />
             </div>
             
