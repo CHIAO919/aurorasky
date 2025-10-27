@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import FlightCard from "./FlightCard";
 import { getWeekdayName } from '@/utils/date';
 
-export default function FlightList({ filter = {}, selectedDate, onSelect }) {
+export default function FlightList({ filter = {}, selectedDate, onSelect, selected }) {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
@@ -34,9 +34,10 @@ export default function FlightList({ filter = {}, selectedDate, onSelect }) {
             <div className="grid gap-4">
                 {visible.map((item) => (
                     <FlightCard
-                    key={`${item.flightNo}-${item.weekday}-${item.departureTime}`}
-                    item={item}
-                    onSelect={onSelect}
+                        key={`${item.flightNo}-${item.weekday}-${item.departureTime}`}
+                        item={item}
+                        onSelect={onSelect}
+                        selected={selected}
                     />
                 ))}
                 {visible.length === 0 && (
