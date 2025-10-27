@@ -2,10 +2,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { addMinutes, formatDurationZh } from '@/utils/time';
 
-export default function FlightCard({ item, onSelect }) {
+export default function FlightCard({ item, onSelect, selected }) {
     const {
         flightNo, originName, destinationName,
-        departureTime,
+        departureTime, weekday
     } = item;
 
     const DURATION_MIN = 190;
@@ -14,6 +14,20 @@ export default function FlightCard({ item, onSelect }) {
 
     const {time:arrivalTime, dayShift} = addMinutes(departureTime, DURATION_MIN);
     const dayShiftLabel = dayShift > 0 ? ` +${dayShift}` : '';
+
+    const isSameFlight =
+        selected &&
+        selected.item &&
+        selected.item.flightNo === flightNo &&
+        selected.item.departureTime === departureTime &&
+        selected.item.weekday === weekday;
+
+    const isBasicSelected = isSameFlight && selected.fare === 'basic';
+    const isPlusSelected  = isSameFlight && selected.fare === 'plus';
+
+    const priceBase = 'text-xl font-bold';
+    const priceBasicCls = `${priceBase} ${isBasicSelected ? 'text-important-red' : 'text-text-blue hover:text-important-red'}`;
+    const pricePlusCls  = `${priceBase} ${isPlusSelected  ? 'text-important-red' : 'text-text-blue hover:text-important-red'}`;
 
     return (
         <article className='flex flex-col md:flex-row justify-between md:px-7 divide-y divide-gray-400 md:divide-y-0 md:divide-x shadow-sm bg-white rounded-2xl'>
@@ -44,7 +58,7 @@ export default function FlightCard({ item, onSelect }) {
             >
                 <p className='md:hidden flex text-text-blue'>經濟艙</p>
                 <div className='flex justify-center items-center'>
-                    <p className='text-xl font-bold text-text-blue hover:text-important-red'>{PRICE_BASIC}</p>
+                    <p className={priceBasicCls}>{PRICE_BASIC}</p>
                     <p className='text-sm'>（TWD）</p>
                 </div>
             </button>
@@ -55,7 +69,7 @@ export default function FlightCard({ item, onSelect }) {
             >
                 <p className='md:hidden flex text-text-blue'>商務艙</p>
                 <div className='flex justify-center items-center'>
-                    <p className='text-xl font-bold text-text-blue hover:text-important-red'>{PRICE_PLUS}</p>
+                    <p className={pricePlusCls}>{PRICE_PLUS}</p>
                     <p className='text-sm'>（TWD）</p>
                 </div>
             </button>
