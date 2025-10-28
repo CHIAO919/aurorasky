@@ -39,11 +39,13 @@ export default function SummaryPage() {
         <div className='bg-bg-blue'>
             <div className="max-w-5xl mx-auto p-6 space-y-8">
                 <ProgressSteps steps={STEPS} current={2}/>
+
+                <h2 className='text-xl md:text-2xl font-bold text-text-blue mb-[25px]'>行程詳細資料</h2>
                 
                 <div className='grid grid-cols-1 lg:grid-cols-12 gap-6'>
                     <div className="order-1 lg:order-1 lg:col-span-8">
                         <section className='mb-[60px]'>
-                            <h2 className='text-xl md:text-2xl font-bold text-text-blue mb-[25px]'>行程詳細資料</h2>
+                            
                             <div>
                                 <div className='flex flex-col gap-[20px]'>
                                     <LegSummary title="去程" leg={picked?.outbound} travelDate={search?.departDate}/>
