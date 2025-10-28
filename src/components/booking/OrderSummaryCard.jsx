@@ -1,7 +1,6 @@
 'use client';
 
 export default function OrderSummaryCard({totalAmount, onNext, disabled = false, nextLabel = '下一步'}) {
-    const fmt = (n) => new Intl.NumberFormat('zh-TW').format(n ?? 0);
 
     return (
         <div className="text-text-blue bg-white p-6 rounded-2xl shadow-sm">
