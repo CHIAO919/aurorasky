@@ -1,12 +1,22 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 
-function LabeledField({ field, value, onChange }) {
+function LabeledField({ field, value, onChange, error }) {
     return (
         <label className="block">
-            <span className="block text-sm text-text-blue mb-1">
-                {field.label}{field.required && <span className="text-red-600 ml-0.5">*</span>}
+            <span className="block text-base text-text-blue mb-1">
+                {field.label}
+                {field.required && <span className="text-red-600 ml-0.5">*</span>}
             </span>
+
+            {field.help && (
+                    <p
+                    id={`${field.name || field.key}-help`}
+                    className="text-sm text-text-blue/80 leading-relaxed mb-2"
+                >
+                    {field.help}
+                </p>
+            )}
 
             {field.type === 'select' ? (
                 <select
@@ -15,20 +25,49 @@ function LabeledField({ field, value, onChange }) {
                     onChange={(e) => onChange(e.target.value)}
                     required={field.required}
                 >
-                    {(field.options || []).map(opt => (
+                    {(field.options || []).map((opt) => (
                         <option key={opt.value} value={opt.value}>{opt.label}</option>
                     ))}
                 </select>
+            ) : field.type === 'radio' ? (
+                <div
+                    role="radiogroup"
+                    aria-label={field.label}
+                    className={field.inline ? 'flex flex-wrap gap-4' : 'space-y-2'}
+                >
+                    {(field.options || []).map((opt, idx) => {
+                        const id = `${field.name || field.key}-${idx}`;
+                        return (
+                        <label key={opt.value} htmlFor={id} className="flex-1 inline-flex items-center gap-2 cursor-pointer select-none">
+                            <input
+                                id={id}
+                                type="radio"
+                                name={field.name || field.key || 'radio-group'}
+                                className="h-4 w-4 border-gray-300 text-main-blue focus:ring-main-blue"
+                                value={opt.value}
+                                checked={value === opt.value}
+                                onChange={(e) => onChange(e.target.value)}
+                                // 只需在群組第一顆加 required，HTML 會套用到整個群組
+                                required={field.required && idx === 0}
+                                disabled={opt.disabled}
+                            />
+                            <span className="text-sm text-text-blue">{opt.label}</span>
+                        </label>
+                        );
+                    })}
+                </div>
             ) : (
                 <input
                     type={field.type || 'text'}
-                    className="w-full border rounded-lg px-2 py-1.5"
+                    className={`w-full border rounded-lg px-2 py-1.5 ${error ? 'border-red-500' : ''}`}
                     placeholder={field.placeholder}
                     value={value ?? ''}
                     onChange={(e) => onChange(e.target.value)}
                     required={field.required}
                 />
             )}
+
+            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
         </label>
     );
 }
@@ -83,16 +122,20 @@ export default function FormCardSwitcher({
         else setInner(next);           // 非受控
     };
 
-    // 驗證
-    const defaultValidate = () =>
-        (current?.fields || []).every(f => !f.required || (data[f.key]?.trim()?.length || 0) > 0);
-    const currentValid = validate ? validate(data, activeKey) : defaultValidate();
-    const allValid = validate
-        ? validate(data)
-        : sections.flatMap(s => s.fields)
-        .every(f => !f.required || (data[f.key]?.trim()?.length || 0) > 0);
+    const getFieldError = (f) => {
+        const v = data[f.key];
+        if (f.required && (v == null || String(v).trim() === '')) return '此欄位必填';
+        if (typeof f.validate === 'function') return f.validate(v, data) || null;
+        return null;
+    };
 
-    // 把整體驗證狀態回拋到上層（讓頁面控制右側按鈕 disable）
+    // 驗證
+    const defaultValidateCurrent = () => (current?.fields || []).every((f) => !getFieldError(f));
+    const defaultValidateAll = () => sections.flatMap((s) => s.fields).every((f) => !getFieldError(f));
+
+    const currentValid = validate ? validate(data, activeKey) : defaultValidateCurrent();
+    const allValid     = validate ? validate(data)             : defaultValidateAll();
+
     useEffect(() => { onAllValidChange?.(allValid); }, [allValid, onAllValidChange]);
 
     return (
@@ -114,6 +157,7 @@ export default function FormCardSwitcher({
                         field={f}
                         value={data[f.key]}
                         onChange={(v) => setField(f.key, v)}
+                        error={getFieldError(f)}
                     />
                     ))}
                 </div>
