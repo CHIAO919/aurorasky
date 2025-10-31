@@ -51,7 +51,7 @@ function Header() {
                 <nav className="hidden md:flex items-center gap-10 text-gray-700 font-bold">
                     <Link className="hover:text-main-blue" href="/about">體驗 AURORA</Link>
                     <Link className="hover:text-main-blue" href="/skytier">SkyTier 會員</Link>
-                    <Link className="hover:text-main-blue" href="#">航班查詢</Link>
+                    <Link className="hover:text-main-blue" href="/booking">航班查詢</Link>
                     <Link className="hover:text-main-blue" href="/contact">聯絡我們</Link>
                 </nav>
 
