@@ -57,10 +57,13 @@ function Header() {
 
                 {/* Desktop actions */}
                 <div className="hidden md:flex items-center gap-3">
-                    <button className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue">
+                    <Link 
+                        className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue"
+                        href="/signup"
+                    >
                         <FontAwesomeIcon icon={["fas", "user-plus"]} className="w-8 h-8 text-main-blue"/>
                         加入會員
-                    </button>
+                    </Link>
                     <button 
                         className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue"
                         onClick={() => setLoginOpen(true)}
@@ -119,13 +122,14 @@ function Header() {
                     </Link>
 
                     <div className="mt-2 grid grid-cols-2 gap-2">
-                        <button 
+                        <Link 
                             className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
                             onClick={() => setOpen(false)}
+                            href="/signup"
                         >
                             <FontAwesomeIcon icon={["fas", "user-plus"]} className="h-4 w-4" />
                             加入會員
-                        </button>
+                        </Link>
                         <button 
                             className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
                             onClick={() => { setLoginOpen(true); }}
