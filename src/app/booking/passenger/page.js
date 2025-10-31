@@ -33,7 +33,7 @@ const sections = [
         label: '聯絡資料',
         fields: [
             { key: 'email',  label: '電子信箱', type: 'email', required: true },
-            { key: 'mobile', label: '行動電話', type: 'tel',   required: true },
+            { key: 'mobile', label: '手機號碼', type: 'tel',   required: true },
         ],
     },
 ];
