@@ -5,15 +5,33 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname } from "next/navigation";
+import LoginModal from "./LoginModal";
+
+const AUTH_KEY = "aurora_auth";
 
 
 function Header() {
     const [open, setOpen] = useState(false);
+    const [loginOpen, setLoginOpen] = useState(false);
+    const [user, setUser] = useState(null);
     const pathname = usePathname() ?? "";
 
     useEffect(() => {
+        try {
+            const raw = localStorage.getItem(AUTH_KEY);
+            if (raw) setUser(JSON.parse(raw));
+        } catch {}
+    }, []);
+
+    useEffect(() => {
         setOpen(false);
+        setLoginOpen(false);
     }, [pathname]);
+
+    const handleLogout = () => {
+        localStorage.removeItem(AUTH_KEY);
+        setUser(null);
+    };
 
     return(
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm">
@@ -43,7 +61,10 @@ function Header() {
                         <FontAwesomeIcon icon={["fas", "user-plus"]} className="w-8 h-8 text-main-blue"/>
                         加入會員
                     </button>
-                    <button className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue">
+                    <button 
+                        className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue"
+                        onClick={() => setLoginOpen(true)}
+                    >
                         <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="w-8 h-8 text-main-blue"/>
                         會員登入
                     </button>
@@ -103,15 +124,24 @@ function Header() {
                             onClick={() => setOpen(false)}
                         >
                             <FontAwesomeIcon icon={["fas", "user-plus"]} className="h-4 w-4" />
-                        加入會員
+                            加入會員
                         </button>
-                        <button className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent">
+                        <button 
+                            className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
+                            onClick={() => { setLoginOpen(true); }}
+                        >
                             <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="h-4 w-4" />
-                        登入
+                            會員登入
                         </button>
                     </div>
                 </nav>
             </div>
+
+            <LoginModal
+                open={loginOpen}
+                onClose={() => setLoginOpen(false)}
+                onSuccess={(u) => setUser(u)}
+            />
         </header>
     );
 }
