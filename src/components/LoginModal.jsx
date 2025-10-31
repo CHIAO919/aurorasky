@@ -18,7 +18,7 @@ export default function LoginModal({ open, onClose, onSuccess }) {
 
         try {
             // TODO: 接後端 API。先用假資料測試
-            const ok = memberId === '1234567890' && password === '123456';
+            const ok = memberId === '1234567890' && password === 'Abc1234!';
             if (!ok) throw new Error('帳號或密碼錯誤');
             const user = { account: `skytier-${memberId}`, token: 'fake', ts: Date.now() };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
