@@ -53,10 +53,13 @@ export default function SignupCompletePage() {
 
                     <div className='border-b border-gray-300 py-[15px] px-6 grid grid-rows-1 gap-1.5'>
                         <h3 className='text-xl font-semibold'>接下來您可以</h3>
-                        <button className='flex items-center gap-1 cursor-pointer hover:underline'>
+                        <Link 
+                            className='flex items-center gap-1 cursor-pointer hover:underline'
+                            href="/booking"
+                        >
                             <FontAwesomeIcon icon={["fas", "plane-departure"]} className='text-main-gold'/>
                             <p>預訂您的下一趟航班</p>
-                        </button>
+                        </Link>
                         <Link 
                             className='flex items-center gap-1 cursor-pointer hover:underline'
                             href="/skytier"
