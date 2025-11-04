@@ -6,9 +6,9 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname } from "next/navigation";
 import LoginModal from "./LoginModal";
+import { displayName } from "@/utils/auth";
 
 const AUTH_KEY = "aurora_auth";
-
 
 function Header() {
     const [open, setOpen] = useState(false);
@@ -17,10 +17,29 @@ function Header() {
     const pathname = usePathname() ?? "";
 
     useEffect(() => {
+        const onStorage = (e) => {
+            if (e.key === AUTH_KEY) {
+                try { setUser(JSON.parse(localStorage.getItem(AUTH_KEY))); }
+                catch { setUser(null); }
+            }
+        };
+        const onAuthChange = () => {
+            try { setUser(JSON.parse(localStorage.getItem(AUTH_KEY))); }
+            catch { setUser(null); }
+        };
+
+        // 初始讀取（關鍵）
         try {
             const raw = localStorage.getItem(AUTH_KEY);
             if (raw) setUser(JSON.parse(raw));
         } catch {}
+
+        window.addEventListener('storage', onStorage);            // 其他分頁同步
+        window.addEventListener('aurora-auth-change', onAuthChange); // 同分頁同步
+        return () => {
+            window.removeEventListener('storage', onStorage);
+            window.removeEventListener('aurora-auth-change', onAuthChange);
+        };
     }, []);
 
     useEffect(() => {
@@ -30,6 +49,8 @@ function Header() {
 
     const handleLogout = () => {
         localStorage.removeItem(AUTH_KEY);
+        document.cookie = 'aurora_auth=; Max-Age=0; Path=/; SameSite=Lax';
+        window.dispatchEvent(new Event('aurora-auth-change'));
         setUser(null);
     };
 
@@ -57,20 +78,41 @@ function Header() {
 
                 {/* Desktop actions */}
                 <div className="hidden md:flex items-center gap-3">
-                    <Link 
-                        className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue"
-                        href="/signup"
-                    >
-                        <FontAwesomeIcon icon={["fas", "user-plus"]} className="w-8 h-8 text-main-blue"/>
-                        加入會員
-                    </Link>
-                    <button 
-                        className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue"
-                        onClick={() => setLoginOpen(true)}
-                    >
-                        <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="w-8 h-8 text-main-blue"/>
-                        會員登入
-                    </button>
+                    {!user ? (
+                        <>
+                            <Link 
+                                className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue"
+                                href="/signup"
+                            >
+                                <FontAwesomeIcon icon={["fas", "user-plus"]} className="w-8 h-8 text-main-blue"/>
+                                加入會員
+                            </Link>
+                            <button 
+                                className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue"
+                                onClick={() => setLoginOpen(true)}
+                            >
+                                <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="w-8 h-8 text-main-blue"/>
+                                會員登入
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                className="flex items-center justify-center w-[135px] py-1 text-gray-700 font-bold cursor-pointer"
+                                href="/account"
+                            >
+                                <FontAwesomeIcon icon={["far", "circle-user"]} className="w-8 h-8 text-main-blue"/>
+                                <p className="text-sm">您好，{displayName(user?.profile)}</p>
+                            </Link>
+                            <button
+                                className="flex items-center justify-center w-28 py-1 border rounded-full text-gray-700 font-bold cursor-pointer hover:bg-light-blue hover:border-transparent hover:text-main-blue"
+                                onClick={handleLogout}
+                            >
+                                <FontAwesomeIcon icon={["fas", "right-from-bracket"]} className="w-8 h-8 text-main-blue"/>
+                                會員登出
+                            </button>
+                        </>
+                    )}
                 </div>
 
                 {/* Mobile hamburger */}
