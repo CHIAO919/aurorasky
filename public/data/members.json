@@ -1,0 +1,32 @@
+[
+    {
+        "id": "1234567890",
+        "password": "Abc1234!",
+        "lastName": "WANG",
+        "firstName": "CHIA-YUN",
+        "gender": "M",
+        "dob": "1994-07-15",
+        "countryCode": "TW",
+        "phone": "+886912345678"
+    },
+    {
+        "id": "9876543210",
+        "password": "Def5678!",
+        "lastName": "LIN",
+        "firstName": "MEI-HUA",
+        "gender": "F",
+        "dob": "1990-03-28",
+        "countryCode": "TW",
+        "phone": "+886987654321"
+    },
+    {
+        "id": "1122334455",
+        "password": "Ghi9012!",
+        "lastName": "CHEN",
+        "firstName": "WEI-TING",
+        "gender": "M",
+        "dob": "1988-12-02",
+        "countryCode": "JP",
+        "phone": "+819012345678"
+    }
+]
