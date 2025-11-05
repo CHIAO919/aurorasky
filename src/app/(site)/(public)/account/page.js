@@ -22,11 +22,11 @@ export default function AccountPage() {
                 <h3 className='text-xl md:text-2xl font-bold text-text-blue mb-[25px]'>我的 SkyTier </h3>
 
                 <div className="flex flex-col gap-[20px]">
-                    <div className="bg-white grid grid-cols-2 items-center p-4">
+                    <div className="bg-white grid md:grid-cols-2 grid-cols-1 items-center md:p-4 p-2">
                         <div>
-                            <h3 className="text-xl md:text-2xl font-bold text-main-blue p-[20px]">您好，{displayName(user?.profile)}</h3>
+                            <h3 className="text-xl md:text-2xl font-bold text-main-blue md:p-[20px] px-[10px] py-[20px]">您好，{displayName(user?.profile)}</h3>
                             <hr className="text-gray-300"/>
-                            <div className="grid grid-cols-3 p-[20px] text-text-blue">
+                            <div className="grid grid-cols-3 md:p-[20px] px-[10px] py-[20px] text-text-blue">
                                 <div>
                                     <p>會員卡級</p>
                                     <p className="text-main-blue font-bold text-lg">SkyTier Blue</p>
@@ -41,7 +41,7 @@ export default function AccountPage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="shrink-0 rounded-tl-4xl rounded-br-4xl overflow-hidden ml-auto">
+                        <div className="shrink-0 rounded-tl-4xl rounded-br-4xl overflow-hidden md:ml-auto m-auto">
                             <Image
                                 src="/skytier/SkyTierBlue.png"
                                 alt="grade"
@@ -52,8 +52,8 @@ export default function AccountPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white p-4 grid grid-cols-2">
-                        <div className="text-text-blue p-[20px] border-r border-gray-300">
+                    <div className="bg-white md:p-4 p-2 grid grid-cols-2">
+                        <div className="text-text-blue md:p-[20px] px-[10px] py-[20px] border-r border-gray-300">
                             <p className="text-xl font-bold">獎勵哩程</p>
                             <div className="flex items-baseline">
                                 <p className="text-2xl font-bold text-main-blue">0</p>
@@ -61,7 +61,7 @@ export default function AccountPage() {
                             </div>
                         </div>
                         
-                        <div className="text-text-blue p-[20px]">
+                        <div className="text-text-blue md:p-[20px] px-[10px] py-[20px]">
                             <p className="text-xl font-bold">晉升資格計算</p>
                             <div className="grid grid-cols-2">
                                 <div className="flex items-baseline">
@@ -76,10 +76,10 @@ export default function AccountPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white p-4 text-text-blue">
-                        <h3 className="text-xl md:text-2xl font-bold p-[20px]">個人資料</h3>
+                    <div className="bg-white md:p-4 p-2 text-text-blue">
+                        <h3 className="text-xl md:text-2xl font-bold md:p-[20px] px-[10px] py-[20px]">個人資料</h3>
                         <hr className="text-gray-300"/>
-                        <div className="grid grid-cols-3 gap-4 p-4">
+                        <div className="grid md:grid-cols-3 grid-cols-2 gap-4 p-4">
                             <div>
                                 <p>姓氏</p>
                                 <p className="text-main-blue font-bold text-lg">{user?.profile?.lastName}</p>
