@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import LoginModal from "./LoginModal";
 import { displayName } from "@/utils/auth";
 
@@ -15,6 +15,7 @@ function Header() {
     const [loginOpen, setLoginOpen] = useState(false);
     const [user, setUser] = useState(null);
     const pathname = usePathname() ?? "";
+    const router = useRouter();
 
     useEffect(() => {
         const onStorage = (e) => {
@@ -52,6 +53,14 @@ function Header() {
         document.cookie = 'aurora_auth=; Max-Age=0; Path=/; SameSite=Lax';
         window.dispatchEvent(new Event('aurora-auth-change'));
         setUser(null);
+
+        setTimeout(() => {
+            const cleanPath = pathname?.replace(/\/+$/, '').toLowerCase();
+            if (cleanPath === '/account') {
+                router.replace('/');
+                router.refresh();
+            }
+        }, 0);
     };
 
     return(
@@ -164,21 +173,42 @@ function Header() {
                     </Link>
 
                     <div className="mt-2 grid grid-cols-2 gap-2">
-                        <Link 
-                            className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
-                            onClick={() => setOpen(false)}
-                            href="/signup"
-                        >
-                            <FontAwesomeIcon icon={["fas", "user-plus"]} className="h-4 w-4" />
-                            加入會員
-                        </Link>
-                        <button 
-                            className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
-                            onClick={() => { setLoginOpen(true); }}
-                        >
-                            <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="h-4 w-4" />
-                            會員登入
-                        </button>
+                        {!user ? (
+                            <>
+                                <Link 
+                                    className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
+                                    onClick={() => setOpen(false)}
+                                    href="/signup"
+                                >
+                                    <FontAwesomeIcon icon={["fas", "user-plus"]} className="h-4 w-4" />
+                                    加入會員
+                                </Link>
+                                <button 
+                                    className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
+                                    onClick={() => { setLoginOpen(true); }}
+                                >
+                                    <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="h-4 w-4" />
+                                    會員登入
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    className="flex items-center justify-center py-1 text-gray-700 font-bold cursor-pointer"
+                                    href="/account"
+                                >
+                                    <FontAwesomeIcon icon={["far", "circle-user"]} className="w-8 h-8 text-main-blue"/>
+                                    <p className="text-sm">您好，{displayName(user?.profile)}</p>
+                                </Link>
+                                <button 
+                                    className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
+                                    onClick={() => { setLoginOpen(true); }}
+                                >
+                                    <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="h-4 w-4" />
+                                    會員登出
+                                </button>
+                            </>
+                        )}
                     </div>
                 </nav>
             </div>
