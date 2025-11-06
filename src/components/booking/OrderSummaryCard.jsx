@@ -24,7 +24,7 @@ export default function OrderSummaryCard({totalAmount, onNext, disabled = false,
                     onClick={onNext}
                     disabled={disabled}
                     className={[
-                        'inline-flex items-center justify-center px-6 py-2.5',
+                        'inline-flex items-center justify-center px-6 py-2.5 cursor-pointer',
                         'rounded-full text-white font-bold',
                         disabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-main-blue hover:bg-blue-700',
                         'transition'

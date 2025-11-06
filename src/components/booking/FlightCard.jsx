@@ -53,7 +53,7 @@ export default function FlightCard({ item, onSelect, selected }) {
             </div>
 
             <button
-                className='md:w-[30%] flex justify-between md:justify-center p-6 items-center'
+                className='md:w-[30%] flex justify-between md:justify-center p-6 items-center cursor-pointer'
                 onClick={() => onSelect?.({ item, fare: 'basic', price: PRICE_BASIC })}
             >
                 <p className='md:hidden flex text-text-blue'>經濟艙</p>
@@ -64,7 +64,7 @@ export default function FlightCard({ item, onSelect, selected }) {
             </button>
 
             <button 
-                className='md:w-[30%] flex justify-between md:justify-center p-6 items-center'
+                className='md:w-[30%] flex justify-between md:justify-center p-6 items-center cursor-pointer'
                 onClick={() => onSelect?.({ item, fare: 'plus', price: PRICE_PLUS })}
             >
                 <p className='md:hidden flex text-text-blue'>商務艙</p>
