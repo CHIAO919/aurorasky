@@ -21,11 +21,11 @@ const sections = [
                     { value: 'ms', label: '小姐' },
                     { value: 'mx', label: '不指定' },
                 ] },
-            { key: 'lastName',  label: '姓氏',  placeholder: '範例) WANG', required: true },
-            { key: 'firstName', label: '名字',  placeholder: '範例) XIAOMING', required: true },
-            { key: 'birthday',  label: '出生',  type: 'date', required: true },
+            { key: 'lastName',  label: '姓氏',  placeholder: '範例) WANG', required: true, pattern: '^[A-Za-z]+$', patternMessage: '僅限英文', inputMode: 'text' },
+            { key: 'firstName', label: '名字',  placeholder: '範例) XIAOMING', required: true, pattern: '^[A-Za-z]+$', patternMessage: '僅限英文', inputMode: 'text' },
+            { key: 'birthday',  label: '出生',  type: 'date', required: true, dateLimit: 'past' },
             { key: 'passport',  label: '護照號碼', required: true },
-            { key: 'passportExpiry', label: '護照效期', type: 'date', required: true },
+            { key: 'passportExpiry', label: '護照效期', type: 'date', required: true, dateLimit: 'future' },
         ],
     },
     {
@@ -33,7 +33,7 @@ const sections = [
         label: '聯絡資料',
         fields: [
             { key: 'email',  label: '電子信箱', type: 'email', required: true },
-            { key: 'mobile', label: '手機號碼', type: 'tel',   required: true },
+            { key: 'mobile', label: '手機號碼', type: 'text', required: true, maxLength: 10, pattern: '^\\d{10}$', patternMessage: '請輸入 10 位手機號碼', inputMode: 'tel' },
         ],
     },
 ];

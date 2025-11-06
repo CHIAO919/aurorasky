@@ -14,9 +14,9 @@ const sections = [
         key: 'creditCard',
         label: '信用卡',
         fields: [
-            { key: 'cardNo',  label: '信用卡號', required: true },
-            { key: 'validity', label: '有效期限',  type: 'date', required: true },
-            { key: 'name',  label: '持卡人姓名', required: true },
+            { key: 'cardNo',  label: '信用卡號', type: 'text', required: true, maxLength: 16, pattern: '^\\d{16}$', patternMessage: '請輸入正確信用卡號', inputMode: 'text' },
+            { key: 'validity', label: '有效期限',  type: 'date', required: true, dateLimit:'future' },
+            { key: 'name',  label: '持卡人姓名', required: true, pattern: '^[A-Za-z]+$', patternMessage: '僅限英文', inputMode: 'text' },
         ],
     },
     {
@@ -24,7 +24,7 @@ const sections = [
         label: '持卡人資料',
         fields: [
             { key: 'email',  label: '電子信箱', type: 'email', required: true },
-            { key: 'mobile', label: '行動電話', type: 'tel',   required: true },
+            { key: 'mobile', label: '行動電話', type: 'text', required: true, maxLength: 10, pattern: '^\\d{10}$', patternMessage: '請輸入 10 位手機號碼', inputMode: 'tel' },
         ],
     },
 ];

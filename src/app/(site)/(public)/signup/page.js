@@ -38,8 +38,8 @@ const sections = [
         key:'personalData',
         label:'個人資料',
         fields: [
-            {key:'lastName', label:'英文姓（與護照一致）', help:'範例）WANG', required:true,},
-            {key:'firstName', label:'英文名+中間名（與護照一致）', help:'範例）XIAOMINGJOSEPH', required:true,},
+            {key:'lastName', label:'英文姓（與護照一致）', help:'範例）WANG', required:true, pattern: '^[A-Za-z]+$', patternMessage: '僅限英文', inputMode: 'text'},
+            {key:'firstName', label:'英文名+中間名（與護照一致）', help:'範例）XIAOMINGJOSEPH', required:true, pattern: '^[A-Za-z]+$', patternMessage: '僅限英文', inputMode: 'text'},
             {key:'gender', label:'性別', type:'radio', required:true, inline: true, 
                 options:[
                     { value: 'male', label: '男' },
@@ -47,7 +47,7 @@ const sections = [
                     { value: 'na', label: '不透露', disabled: false },
                 ],
             },
-            { key: 'birthday',  label: '出生',  type: 'date', required: true },
+            { key: 'birthday',  label: '出生',  type: 'date', required: true, dateLimit: 'past' },
             { key: 'nation', label: '國家/地區代碼', type: 'select', required: true,
                 options: [
                     { value: '', label: '請選擇' },
@@ -56,7 +56,7 @@ const sections = [
                     { value: 'KR', label: '+82（韓國）' },
                 ] 
             },
-            { key: 'mobile', label: '手機號碼', type: 'tel',   required: true },
+            { key: 'mobile', label: '手機號碼', type: 'text', required: true, maxLength: 10, pattern: '^\\d{10}$', patternMessage: '請輸入 10 位手機號碼', inputMode: 'tel' },
         ],
     },
     {
