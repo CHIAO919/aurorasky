@@ -109,6 +109,17 @@ function LabeledField({ field, value, onChange, error }) {
                         />
                     );
                 })()
+            ) : field.type === 'email' ? (
+                <input
+                    type="email"
+                    className={`w-full border rounded-lg px-2 py-1.5 ${error ? 'border-red-500' : ''}`}
+                    value={value ?? ''}
+                    onChange={(e) => onChange(e.target.value)}
+                    required={field.required}
+                    inputMode="email"
+                    autoComplete={field.autoComplete ?? 'email'}
+                    spellCheck={false}
+                />
             ) : (
                 <input
                     type={field.type || 'text'}
@@ -138,9 +149,9 @@ export default function FormCardSwitcher({
         defaultActiveKey,
         defaultValue,
         value,
-        onChange,               // (data) => void
-        onAllValidChange,       // (boolean) => void
-        validate,               // (data, activeKey?) => boolean（可選）
+        onChange,
+        onAllValidChange,
+        validate,
         sessionKey = 'aurora_booking_profile',
         className,
         showSectionTitle = true,
@@ -161,7 +172,6 @@ export default function FormCardSwitcher({
             onChange?.({ ...data, ...parsed });
         }
         } catch {}
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sessionKey]);
 
     // 寫入 sessionStorage + 對外同步資料
@@ -179,8 +189,8 @@ export default function FormCardSwitcher({
 
     const setField = (k, v) => {
         const next = { ...data, [k]: v };
-        if (value) onChange?.(next);   // 受控
-        else setInner(next);           // 非受控
+        if (value) onChange?.(next);
+        else setInner(next);
     };
 
     const getFieldError = (f) => {
@@ -209,6 +219,21 @@ export default function FormCardSwitcher({
                 } catch (error) {
                     console.log(error);
                 }
+            }
+        }
+
+        if (f.type === 'email') {
+            const s = typeof v === 'string' ? v.trim() : '';
+            if (!s) return null;
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+            // 只允許單一 email：如果含逗號或空白分隔多個，一律拒
+            if (s.includes(',') || /\s[,;]\s?/.test(s) || s.split('@').length !== 2) {
+                return '請只輸入一組 Email';
+            }
+            if (!emailRegex.test(s)) {
+                return 'Email 格式不正確';
             }
         }
 
