@@ -105,7 +105,6 @@ export default function Modal({ open, onClose, children, labelledById }) {
             aria-modal="true"
             aria-labelledby={labelledById}
             onMouseDown={(e) => {
-                // 點遮罩關閉（避免內部拖曳造成誤關）
                 if (e.currentTarget === e.target) onClose?.();
             }}
         >

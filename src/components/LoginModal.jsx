@@ -16,7 +16,7 @@ export default function LoginModal({ open, onClose, onSuccess }) {
     const pathname = usePathname();
 
     useEffect(() => {
-        fetch('/data/members.json', { cache: 'no-store' }) // 開發時避免快取
+        fetch('/data/members.json', { cache: 'no-store' })
             .then((r) => {
             if (!r.ok) throw new Error('載入會員資料失敗');
             return r.json();
@@ -35,19 +35,17 @@ export default function LoginModal({ open, onClose, onSuccess }) {
                 throw new Error('會員資料尚未載入，請稍後再試');
             }
 
-            // 用 JSON 內的多組帳密比對
             const found = members.find(m => m.id === memberId && m.password === password);
             if (!found) throw new Error('帳號或密碼錯誤');
 
-            // 組登入後要存的使用者資料（含姓氏/稱謂所需欄位）
             const user = {
                 account: `${found.id}`,
-                token: 'fake',            // demo 用，之後可換成後端回傳的 JWT
+                token: 'fake',
                 ts: Date.now(),
                 profile: {
                     lastName: found.lastName,
                     firstName: found.firstName,
-                    gender: found.gender,   // 'M' / 'F'
+                    gender: found.gender,
                     dob: found.dob,
                     countryCode: found.countryCode,
                     phone: found.phone,
@@ -57,11 +55,11 @@ export default function LoginModal({ open, onClose, onSuccess }) {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
             document.cookie = `aurora_auth=1; Max-Age=${60*60*24*7}; Path=/; SameSite=Lax`;
             window.dispatchEvent(new Event('aurora-auth-change'));
-            onSuccess?.(user);   // 回傳給 Header
-            onClose?.();         // 關閉彈窗
+            onSuccess?.(user);
+            onClose?.();
 
             if (pathname === '/signup') {
-                router.replace('/');   // 從註冊頁登入 → 回首頁
+                router.replace('/');
             }
         } catch (ex) {
             setErr(ex.message || '登入失敗，請稍後再試');
