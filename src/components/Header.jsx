@@ -202,7 +202,7 @@ function Header() {
                                 </Link>
                                 <button 
                                     className="flex items-center justify-center gap-2 px-3 py-2 rounded-full border font-bold hover:bg-light-blue hover:border-transparent"
-                                    onClick={() => { setLoginOpen(true); }}
+                                    onClick={handleLogout}
                                 >
                                     <FontAwesomeIcon icon={["fas", "right-to-bracket"]} className="h-4 w-4" />
                                     會員登出
