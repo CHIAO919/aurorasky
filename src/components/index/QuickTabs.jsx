@@ -105,7 +105,7 @@ export default function QuickTabs() {
                             className="text-center text-text-blue"
                         >
                             <button
-                                className="border border-text-blue rounded-full w-[90%] md:w-[20vw] py-1 text-base mb-2 hover:bg-light-blue font-bold hover:border-transparent"
+                                className="border border-text-blue rounded-full w-full max-w-[300px] px-4 py-1 text-base mb-2 hover:bg-light-blue font-bold hover:border-transparent"
                             >{a.title}</button>
 
                             <p className="text-sm">{a.desc}</p>
