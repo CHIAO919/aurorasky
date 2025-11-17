@@ -8,8 +8,6 @@ import FlightCard from "@/components/booking/FlightCard";
 export default function Home() {
   const handleSearch = (payload) => {
     console.log('搜尋條件：', payload);
-    // 之後可換成 router.push(`/booking?from=${payload.departure}&to=${payload.arrival}&d=${payload.departDate}&r=${payload.returnDate}`)
-    // 或直接呼叫搜尋 API
   };
 
   return (
