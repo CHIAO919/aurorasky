@@ -5,9 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateStrip from '@/components/booking/DateStrip';
 import FlightList from '@/components/booking/FlightList';
 import ProgressSteps from '@/components/booking/ProgressSteps';
+import { useBooking } from '@/context/BookingContext';
 
-const STORAGE_KEY = 'aurora_last_search';
-const SELECT_KEY  = 'aurora_selected_flights';
 const STEPS = ['航班', '詳情', '個人資料', '付款', '完成'];
 
 export default function FlightResultsPage() {
@@ -25,33 +24,14 @@ export default function FlightResultsPage() {
     const { leg } = useParams(); // 'outbound' | 'return'
     const isReturn = leg === 'return';
 
-    const [search, setSearch] = useState(null); // { departure, arrival, departDate, returnDate }
+    const { searchParams, selectedFlights, selectFlight } = useBooking();
     const [selectedDate, setSelectedDate] = useState('');
-    const [picked, setPicked] = useState({ outbound: null, return: null });
-
-    // 讀 localStorage
-    useEffect(() => {
-        try {
-            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-            if (saved) setSearch(saved);
-        } catch {}
-
-        try {
-            const sel = JSON.parse(localStorage.getItem(SELECT_KEY) || 'null');
-            if (sel && (typeof sel === 'object')) {
-                setPicked({
-                outbound: sel.outbound ?? null,
-                return: sel.return ?? null,
-                });
-            }
-        } catch {}
-    }, []);
 
     // 頁面標題（所選行程）
     const routeLabel = useMemo(() => {
-        if (!search) return '';
-        const from = isReturn ? search.arrival : search.departure;
-        const to   = isReturn ? search.departure : search.arrival;
+        if (!searchParams) return '';
+        const from = isReturn ? searchParams.arrival : searchParams.departure;
+        const to   = isReturn ? searchParams.departure : searchParams.arrival;
         const dir  = isReturn ? '回程' : '去程';
         return (
             <>
@@ -62,64 +42,54 @@ export default function FlightResultsPage() {
                 <p className='text-xl font-bold'>{nameOf(from)}前往{nameOf(to)}</p>
             </>
         );
-    }, [search, isReturn]);
+    }, [searchParams, isReturn]);
 
     // 根據目前頁籤（去/回）決定初始日期
     useEffect(() => {
-        if (!search) return;
-        setSelectedDate(isReturn ? search.returnDate : search.departDate);
-    }, [search, isReturn]);
+        if (!searchParams) return;
+        setSelectedDate(isReturn ? searchParams.returnDate : searchParams.departDate);
+    }, [searchParams, isReturn]);
 
     // 固定只呼叫一次 useMemo；沒資料時回傳 null
     const filter = useMemo(() => {
-        if (!search) return null;
+        if (!searchParams) return null;
         return isReturn
-        ? { origin: search.arrival, destination: search.departure }   // 回程
-        : { origin: search.departure, destination: search.arrival };  // 去程
-    }, [search, isReturn]);
+        ? { origin: searchParams.arrival, destination: searchParams.departure }   // 回程
+        : { origin: searchParams.departure, destination: searchParams.arrival };  // 去程
+    }, [searchParams, isReturn]);
 
     // 金額加總
     const totalPrice = useMemo(() => {
-        const o = picked.outbound?.price ?? 0;
-        const r = picked.return?.price ?? 0;
+        const o = selectedFlights.outbound?.price ?? 0;
+        const r = selectedFlights.return?.price ?? 0;
         return o + r;
-    }, [picked]);
+    }, [selectedFlights]);
 
-    // 小工具：存回 localStorage
-    function persistPicked(next) {
-        localStorage.setItem(SELECT_KEY, JSON.stringify(next));
-    }
-
-    // 點選某航班後（從 FlightCard 傳上來）
+    // 點選某航班後
     const handleSelect = ({ item, fare, price }) => {
-        const next = {
-        outbound: isReturn ? picked.outbound : { item, fare, price },
-        return:   isReturn ? { item, fare, price } : picked.return,
-        };
-        setPicked(next);
-        persistPicked(next);
+        selectFlight(isReturn ? 'return' : 'outbound', { item, fare, price });
     };
 
     // 按下固定列「下一步/下一頁」
     const handleNext = () => {
         if (!isReturn) {
-            if (!picked.outbound) {
+            if (!selectedFlights.outbound) {
                 alert('請先選擇去程票價');
                 return;
             }
             router.push('/booking/results/return');
         } else {
-            if (!picked.return) {
+            if (!selectedFlights.return) {
                 alert('請先選擇回程票價');
                 return;
             }
-            router.push('/booking/summary'); // 依你的流程調整下一頁
+            router.push('/booking/summary'); 
         }
     };
 
     const fmt = (n) => new Intl.NumberFormat('zh-TW').format(n);
 
-    if (!search || !filter || !selectedDate) return null;
+    if (!searchParams || !filter || !selectedDate) return null;
 
     return (
         <div className='relative bg-bg-blue'>
@@ -136,7 +106,7 @@ export default function FlightResultsPage() {
                     filter={filter}
                     selectedDate={selectedDate}
                     onSelect={handleSelect}
-                    selected={isReturn ? picked.return : picked.outbound}
+                    selected={isReturn ? selectedFlights.return : selectedFlights.outbound}
                 />
             </div>
             
@@ -162,7 +132,7 @@ export default function FlightResultsPage() {
                     <button
                         className='text-xl border rounded-full px-8 py-2 cursor-pointer hover:bg-main-blue hover:text-white'
                         onClick={handleNext}
-                        disabled={(!isReturn && !picked.outbound) || (isReturn && !picked.return)}
+                        disabled={(!isReturn && !selectedFlights.outbound) || (isReturn && !selectedFlights.return)}
                     >
                         {isReturn ? '下一頁' : '下一步'}
                     </button>
